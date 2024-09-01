@@ -6,7 +6,7 @@ this is supposed to be exact replica of this steps mentioned in this article
 https://mmazzarolo.com/blog/2022-02-05-creating-and-deploying-a-proxy-server-in-5-minutes/
 
 The deployed site here in vercel ended up -
-proxy-server-jade-gamma.vercel.app
+https://proxy-server-mz84oskc8-darkacers-projects.vercel.app/
 
 ## To push in new code to an empty repo
 1. Create a repo in github
