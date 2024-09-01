@@ -1,5 +1,14 @@
-# To push in new code to an empty repo
-1. Create a repo in github and run follpwing commands
+# This is a proxy setup
+The main motive behind creating this project is to create a proxy server
+
+this is supposed to be exact replica of this steps mentioned in this article
+
+https://mmazzarolo.com/blog/2022-02-05-creating-and-deploying-a-proxy-server-in-5-minutes/
+
+
+## To push in new code to an empty repo
+1. Create a repo in github
+2. Run follpwing commands
 
 ```
 git init
