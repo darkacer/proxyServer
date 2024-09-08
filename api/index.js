@@ -20,15 +20,16 @@ app.get("/api", async (req, res) => {
   delete req.headers.headerlist;
 
   try {
-    const params = new URLSearchParams({
-      ...url.parse(req.url, true).query, //Query parameters passed to the proxy e.g city here
-    });
+    // const params = new URLSearchParams({
+    //   ...url.parse(req.url, true).query, //Query parameters passed to the proxy e.g city here
+    // });
 
-    const apiResponse = await needle("get", `${API_URL}?${params}`, {
+    const apiResponse = await needle("get", `${API_URL}`, {
       headers: options,
     });
-    const data = apiResponse.body;
-    res.status(200).json(data);
+    const data = JSON.stringify(apiResponse.body);
+    console.log(data);
+    res.status(200).json(JSON.parse(data));
   } catch (ex) {
     res.status(500).json({ ex });
   }
