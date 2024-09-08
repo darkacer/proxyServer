@@ -1,36 +1,3 @@
-// Create a proxy to redirect requests of the "/api/*" path to "https://example.org".
-//
-// Examples:
-// GET /api/hello → GET https://example.org/hello
-// POST /api/test?color=red → POST https://example.org/test?color=red
-//
-// Additionally, the proxy will:
-// - Add an "x-added" header
-// - Remove the "x-removed" header
-// From the proxied response.
-//
-// You can/should update the proxy to suit your needs.
-// See https://github.com/chimurai/http-proxy-middleware for more details.
-// const { createProxyMiddleware } = require("http-proxy-middleware");
-
-// const apiProxy = createProxyMiddleware({
-//   target: "https://example.org",
-//   changeOrigin: true,
-//   pathRewrite: {
-//     "^/api": "", // strip "/api" from the URL
-//   },
-//   onProxyRes(proxyRes) {
-//     console.log("hello", proxyRes);
-//     proxyRes.headers["x-added"] = "foobar"; // add new header to response
-//     delete proxyRes.headers["x-removed"]; // remove header from response
-//   },
-// });
-
-// // Expose the proxy on the "/api/*" endpoint.
-// export default function (req, res) {
-//   return apiProxy(req, res);
-// }
-
 const express = require("express");
 const cors = require("cors");
 const url = require("url");
@@ -43,23 +10,23 @@ let API_URL = process.env.API_URL || "https://api.restful-api.dev/objects";
 // const API_KEY_VARIABLE = process.env.API_KEY_VARIABLE;
 // const API_KEY_VALUE = process.env.API_KEY_VALUE; //create the route
 app.get("/api", async (req, res) => {
-  // console.log(API_URL, req.get("myUrl"));
-  for (key in req.headers) {
-    console.log(key);
-  }
   API_URL = req.headers.myurl || API_URL;
-  delete req.headers.myurl;
-  console.log("after-------");
-  for (key in req.headers) {
-    console.log(key);
+  let options = {};
+  for (let header of req.headers.headerlist.split(",")) {
+    head = header.toLowerCase();
+    options[head] = req.headers[head];
   }
+  delete req.headers.myurl;
+  delete req.headers.headerlist;
+
   try {
     const params = new URLSearchParams({
       ...url.parse(req.url, true).query, //Query parameters passed to the proxy e.g city here
-      headers: req.headers,
     });
-    //Call the actual api here using needle
-    const apiResponse = await needle("get", `${API_URL}?${params}`, {});
+
+    const apiResponse = await needle("get", `${API_URL}?${params}`, {
+      headers: options,
+    });
     const data = apiResponse.body;
     res.status(200).json(data);
   } catch (ex) {
@@ -67,3 +34,23 @@ app.get("/api", async (req, res) => {
   }
 });
 app.listen(PORT, () => console.log(`Proxy server listening at port ${PORT}`));
+
+// To run this use the following code -
+// >_ npm run start
+// in postman replicate the following
+// const myHeaders = new Headers();
+// myHeaders.append("myUrl", "https://workday--wdgtmdev.sandbox.my.salesforce.com/services/data/v62.0/metadata/deployRequest/0Af7600000WNrp6?includeDetails=true");
+// myHeaders.append("Authorization", "Bearer 00D760000004g8M!ARQAQNJ9WMA00.EYlYOb3TG1oomPIBJiHi8UyUTk9U.arvc91tn3BDfqluamOBevvjfOC9c4aC1hAz5I2QausYmVdscqZCxD");
+// myHeaders.append("Content-Type", "application/json");
+// myHeaders.append("headerlist", "Authorization,Content-Type");
+
+// const requestOptions = {
+//   method: "GET",
+//   headers: myHeaders,
+//   redirect: "follow"
+// };
+
+// fetch("localhost:4000/api", requestOptions)
+//   .then((response) => response.text())
+//   .then((result) => console.log(result))
+//   .catch((error) => console.error(error));
