@@ -20,6 +20,7 @@ const apiProxy = createProxyMiddleware({
     "^/api": "", // strip "/api" from the URL
   },
   onProxyRes(proxyRes) {
+    console.log("hello", proxyRes);
     proxyRes.headers["x-added"] = "foobar"; // add new header to response
     delete proxyRes.headers["x-removed"]; // remove header from response
   },
