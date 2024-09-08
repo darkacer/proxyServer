@@ -8,6 +8,9 @@ https://mmazzarolo.com/blog/2022-02-05-creating-and-deploying-a-proxy-server-in-
 The deployed site here in vercel ended up -
 https://proxy-server-mz84oskc8-darkacers-projects.vercel.app/
 
+The API is hosted on the following endpoint
+https://proxy-server-jade-gamma.vercel.app/api
+
 ## To push in new code to an empty repo
 1. Create a repo in github
 2. Run follpwing commands

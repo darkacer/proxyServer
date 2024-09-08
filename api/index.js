@@ -39,7 +39,7 @@ const needle = require("needle");
 const app = new express();
 const PORT = process.env.PORT || 4000; //Enable CORS
 app.use(cors()); // Enviornment variable
-const API_URL = process.env.API_URL || "https://api.restful-api.dev/objects";
+let API_URL = process.env.API_URL || "https://api.restful-api.dev/objects";
 // const API_KEY_VARIABLE = process.env.API_KEY_VARIABLE;
 // const API_KEY_VALUE = process.env.API_KEY_VALUE; //create the route
 app.get("/api", async (req, res) => {
@@ -47,6 +47,7 @@ app.get("/api", async (req, res) => {
   for (key in req.headers) {
     console.log(key);
   }
+  API_URL = req.headers.myurl || API_URL;
   delete req.headers.myurl;
   console.log("after-------");
   for (key in req.headers) {
