@@ -1,4 +1,4 @@
-# This is a proxy setup- test:
+# This is a proxy setup
 The main motive behind creating this project is to create a proxy server
 
 this is supposed to be exact replica of this steps mentioned in this article
